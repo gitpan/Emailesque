@@ -21,6 +21,7 @@ my %WriteMakefileArgs = (
   'NAME' => 'Emailesque',
   'PREREQ_PM' => {
     'Authen::SASL' => '0',
+    'Email::AddressParser' => '1',
     'Email::Stuff' => '2.102',
     'Hash::Merge' => '0.12',
     'IO::Socket::SSL' => '0',
@@ -28,9 +29,9 @@ my %WriteMakefileArgs = (
     'Net::SMTP::TLS' => '0',
     'Net::SSLeay' => '0'
   },
-  'VERSION' => '1.103650',
+  'VERSION' => '1.110090',
   'test' => {
-    'TESTS' => ''
+    'TESTS' => 't/*.t'
   }
 );
 

@@ -14,10 +14,11 @@ meta-spec:
 name: Emailesque
 requires:
   Authen::SASL: 0
+  Email::AddressParser: 1
   Email::Stuff: 2.102
   Hash::Merge: 0.12
   IO::Socket::SSL: 0
   Net::SMTP::SSL: 0
   Net::SMTP::TLS: 0
   Net::SSLeay: 0
-version: 1.103650
+version: 1.110090

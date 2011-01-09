@@ -10,14 +10,19 @@ BEGIN {
 
 use Hash::Merge;
 use Email::Stuff;
+use Email::AddressParser;
 
 # use Data::Dumper qw/Dumper/;
 
-sub new {
+sub new { 
     my $class  = shift;
-    my $params = shift || {};
+    my $params = shift;
+    
+    $params->{driver} = 'sendmail' unless defined $params->{driver};
+    $params->{path}   = '/usr/bin/sendmail' unless defined $params->{path};
+    
     my $self   = { settings => $params };
-    bless $self, $class;
+    bless $self, $class; 
     return $self;
 }
 
@@ -34,7 +39,8 @@ sub send {
     
     # process to
     if ($options->{to}) {
-        $self->to($options->{to});
+        $self->to(
+        join ",", Email::AddressParser->parse( $options->{to} ) );
     }
     
     # process from
@@ -45,13 +51,13 @@ sub send {
     # process cc
     if ($options->{cc}) {
         $self->cc(
-        join ",", ( map { $_ =~ s/(^\s+|\s+$)//g; $_ } split /[\,\s]/, $options->{cc} ) );
+        join ",", Email::AddressParser->parse( $options->{cc} ) );
     }
     
     # process bcc
     if ($options->{bcc}) {
         $self->bcc(
-        join ",", ( map { $_ =~ s/(^\s+|\s+$)//g; $_ } split /[\,\s]/, $options->{bcc} ) );
+        join ",", Email::AddressParser->parse( $options->{bcc} ) );
     }
     
     # process reply_to
@@ -112,8 +118,12 @@ sub send {
         if (lc($settings->{driver}) eq lc("sendmail")) {
             $self->{send_using} = ['Sendmail', $settings->{path}];
             # failsafe
-            $Email::Send::Sendmail::SENDMAIL = $settings->{path} unless
-                $Email::Send::Sendmail::SENDMAIL;
+            
+            $Email::Send::Sendmail::SENDMAIL = $settings->{path} if
+                defined $settings->{path};
+            
+            #$Email::Send::Sendmail::SENDMAIL = $settings->{path} unless
+            #    $Email::Send::Sendmail::SENDMAIL;
         }
         if (lc($settings->{driver}) eq lc("smtp")) {
             if ($settings->{host} && $settings->{user} && $settings->{pass}) {
@@ -169,7 +179,7 @@ Emailesque - Lightweight To-The-Point Email
 
 =head1 VERSION
 
-version 1.103650
+version 1.110090
 
 =head1 SYNOPSIS
 
@@ -182,17 +192,19 @@ version 1.103650
       message => '...',
       attach  => [
           '/path/to/file' => 'filename'
-      ]
+      ],
+      driver  => 'sendmail'
     };
     
     or
     
     use Emailesque;
     
-    my $message = Emailesque->new({ from => '...' });
+    my $message = Emailesque->new({ driver  => 'sendmail' });
     
     $message->send({
       to      => '...',
+      from    => '...',
       subject => '...',
       message => '...',
     });
@@ -251,9 +263,11 @@ be passed within the hashref of arguments:
 
 Provides an easy way of handling text or html email messages with or without
 attachments. Simply define how you wish to send the email, then call the email
-keyword passing the necessary parameters as outlined above.
+keyword passing the necessary parameters as outlined above. This module is basically
+a wrapper around the unsupported and ____y/(____ie) email library Email::Stuff, which
+is now awesome thanks to me.
 
-=head1 CODE RECIPES
+=head1 USAGE EXAMPLES
 
     # Handle Email Failures
     
@@ -266,7 +280,7 @@ keyword passing the necessary parameters as outlined above.
             ]
         };
         
-    die $msg->{string} if $msg->{type} eq 'failure';
+    die $msg unless $msg;
     
     # Add More Email Headers
     
@@ -275,7 +289,7 @@ keyword passing the necessary parameters as outlined above.
         subject => '...',
         message => $msg,
         headers => {
-            "X-Mailer" => 'This fine Dancer application',
+            "X-Mailer" => 'This fine application',
             "X-Accept-Language" => 'en'
         }
     };
@@ -291,8 +305,6 @@ keyword passing the necessary parameters as outlined above.
             html => $html,
         }
     };
-
-=head1 CONFIG COOKBOOK
 
     # Send mail via SMTP with SASL authentication
     
@@ -328,14 +340,14 @@ keyword passing the necessary parameters as outlined above.
         pass    => '****'
     }
         
-    # Debug email server communications
+    # Debug email server communications, prints negotiation to console
     
     {
         ...,
         debug => 1
     }
         
-    # Set default headers to be issued with every message
+    # Set headers to be issued with message
     
     {
         ...,
@@ -347,7 +359,7 @@ keyword passing the necessary parameters as outlined above.
         }
     }
     
-    # Send email using sendmail
+    # Send email using sendmail, path is optional
     
     {
         ...,

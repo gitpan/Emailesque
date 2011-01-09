@@ -2,7 +2,7 @@ NAME
     Emailesque - Lightweight To-The-Point Email
 
 VERSION
-    version 1.103650
+    version 1.110090
 
 SYNOPSIS
         use Emailesque qw/email/;
@@ -14,17 +14,19 @@ SYNOPSIS
           message => '...',
           attach  => [
               '/path/to/file' => 'filename'
-          ]
+          ],
+          driver  => 'sendmail'
         };
     
         or
     
         use Emailesque;
     
-        my $message = Emailesque->new({ from => '...' });
+        my $message = Emailesque->new({ driver  => 'sendmail' });
     
         $message->send({
           to      => '...',
+          from    => '...',
           subject => '...',
           message => '...',
         });
@@ -83,9 +85,11 @@ DESCRIPTION
     Provides an easy way of handling text or html email messages with or
     without attachments. Simply define how you wish to send the email, then
     call the email keyword passing the necessary parameters as outlined
-    above.
+    above. This module is basically a wrapper around the unsupported and
+    ____y/(____ie) email library Email::Stuff, which is now awesome thanks
+    to me.
 
-CODE RECIPES
+USAGE EXAMPLES
         # Handle Email Failures
     
         my $msg = email {
@@ -97,7 +101,7 @@ CODE RECIPES
                 ]
             };
         
-        die $msg->{string} if $msg->{type} eq 'failure';
+        die $msg unless $msg;
     
         # Add More Email Headers
     
@@ -106,7 +110,7 @@ CODE RECIPES
             subject => '...',
             message => $msg,
             headers => {
-                "X-Mailer" => 'This fine Dancer application',
+                "X-Mailer" => 'This fine application',
                 "X-Accept-Language" => 'en'
             }
         };
@@ -123,7 +127,6 @@ CODE RECIPES
             }
         };
 
-CONFIG COOKBOOK
         # Send mail via SMTP with SASL authentication
     
         {
@@ -158,14 +161,14 @@ CONFIG COOKBOOK
             pass    => '****'
         }
         
-        # Debug email server communications
+        # Debug email server communications, prints negotiation to console
     
         {
             ...,
             debug => 1
         }
         
-        # Set default headers to be issued with every message
+        # Set headers to be issued with message
     
         {
             ...,
@@ -177,7 +180,7 @@ CONFIG COOKBOOK
             }
         }
     
-        # Send email using sendmail
+        # Send email using sendmail, path is optional
     
         {
             ...,
