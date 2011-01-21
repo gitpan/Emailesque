@@ -7,4 +7,3 @@ dist.ini
 lib/Emailesque.pm
 t/01_load.t
 t/02_rundown.t
-t/tmpwjLbWH.html

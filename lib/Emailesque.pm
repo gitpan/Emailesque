@@ -19,7 +19,7 @@ sub new {
     my $params = shift;
     
     $params->{driver} = 'sendmail' unless defined $params->{driver};
-    $params->{path}   = '/usr/bin/sendmail' unless defined $params->{path};
+    # $params->{path}   = '/usr/bin/sendmail' unless defined $params->{path};
     
     my $self   = { settings => $params };
     bless $self, $class; 
@@ -179,21 +179,17 @@ Emailesque - Lightweight To-The-Point Email
 
 =head1 VERSION
 
-version 1.110090
+version 1.110210
 
 =head1 SYNOPSIS
 
-    use Emailesque qw/email/;
+    use Emailesque;
     
     email {
       to      => '...',
       from    => '...',
       subject => '...',
       message => '...',
-      attach  => [
-          '/path/to/file' => 'filename'
-      ],
-      driver  => 'sendmail'
     };
     
     or
@@ -207,6 +203,9 @@ version 1.110090
       from    => '...',
       subject => '...',
       message => '...',
+      attach  => [
+          '/path/to/file' => 'filename'
+      ]
     });
 
 Important Note! The default email format is plain-text, this can be changed to
@@ -258,6 +257,9 @@ be passed within the hashref of arguments:
     headers => {
         "X-Mailer" => "SPAM-THE-WORLD-BOT 1.23456789"
     }
+
+Please note that if you get an error using basic sendmail functionality, chances
+are good that your Mail Transfer Agent (email system) is not setup properly.
 
 =head1 DESCRIPTION
 
