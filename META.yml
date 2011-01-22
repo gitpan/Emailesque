@@ -21,4 +21,4 @@ requires:
   Net::SMTP::SSL: 0
   Net::SMTP::TLS: 0
   Net::SSLeay: 0
-version: 1.110210
+version: 1.110220

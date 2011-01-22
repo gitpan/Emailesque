@@ -37,27 +37,31 @@ sub send {
     #$options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($settings, $options);
     $options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($options, $settings); # requested by igor.bujna@post.cz
     
+    die "cannot send mail without a sender, recipient, subject and message" unless
+        $options->{to} && $options->{from} && $options->{subject} && $options->{message};
+    
     # process to
     if ($options->{to}) {
         $self->to(
-        join ",", Email::AddressParser->parse( $options->{to} ) );
+        join ",", map { $_->format } Email::AddressParser->parse( $options->{to} ) );
     }
     
     # process from
     if ($options->{from}) {
-        $self->from($options->{from});
+        $self->from(
+        join ",", map { $_->format } Email::AddressParser->parse( $options->{from} ) );
     }
     
     # process cc
     if ($options->{cc}) {
         $self->cc(
-        join ",", Email::AddressParser->parse( $options->{cc} ) );
+        join ",",  map { $_->format } Email::AddressParser->parse( $options->{cc} ) );
     }
     
     # process bcc
     if ($options->{bcc}) {
         $self->bcc(
-        join ",", Email::AddressParser->parse( $options->{bcc} ) );
+        join ",",  map { $_->format } Email::AddressParser->parse( $options->{bcc} ) );
     }
     
     # process reply_to
@@ -110,7 +114,7 @@ sub send {
     }
 
     # some light error handling
-    die 'specify type multi if sending text and html'
+    die 'email error: specify type multi if sending text and html'
         if lc($options->{type}) eq 'multi' && "HASH" eq ref $options->{type};
         
     # okay, go team, go
@@ -179,7 +183,7 @@ Emailesque - Lightweight To-The-Point Email
 
 =head1 VERSION
 
-version 1.110210
+version 1.110220
 
 =head1 SYNOPSIS
 
