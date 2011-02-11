@@ -183,7 +183,7 @@ Emailesque - Lightweight To-The-Point Email
 
 =head1 VERSION
 
-version 1.110220
+version 1.110420
 
 =head1 SYNOPSIS
 

@@ -2,25 +2,25 @@ NAME
     Emailesque - Lightweight To-The-Point Email
 
 VERSION
-    version 1.110220
+    version 1.110420
 
 SYNOPSIS
         use Emailesque;
-    
-        email {
+        
+    email {
           to      => '...',
           from    => '...',
           subject => '...',
           message => '...',
         };
-    
-        or
-    
-        use Emailesque;
-    
-        my $message = Emailesque->new({ driver  => 'sendmail' });
-    
-        $message->send({
+        
+    or
+        
+    use Emailesque;
+        
+    my $message = Emailesque->new({ driver  => 'sendmail' });
+        
+    $message->send({
           to      => '...',
           from    => '...',
           subject => '...',
@@ -37,45 +37,45 @@ SYNOPSIS
 
         # send message to
         to => $email_recipient
-    
-        # send messages from
+        
+    # send messages from
         from => $mail_sender
-    
-        # email subject
+        
+    # email subject
         subject => 'email subject line'
-    
-        # message body
+        
+    # message body
         message => 'html or plain-text data'
         message => {
             text => $text_message,
             html => $html_messase,
             # type must be 'multi'
         }
-    
-        # email message content type
+        
+    # email message content type
         type => 'text'
         type => 'html'
         type => 'multi'
-    
-        # carbon-copy other email addresses
+        
+    # carbon-copy other email addresses
         cc => 'user@site.com'
         cc => 'user_a@site.com, user_b@site.com, user_c@site.com'
         cc => join ', ', @email_addresses
-    
-        # blind carbon-copy other email addresses
+        
+    # blind carbon-copy other email addresses
         bcc => 'user@site.com'
         bcc => 'user_a@site.com, user_b@site.com, user_c@site.com'
         bcc => join ', ', @email_addresses
-    
-        # specify where email responses should be directed
+        
+    # specify where email responses should be directed
         reply_to => 'other_email@website.com'
-    
-        # attach files to the email
+        
+    # attach files to the email
         attach => [
             $file_location => $attachment_name,
         ]
-    
-        # send additional (specialized) headers
+        
+    # send additional (specialized) headers
         headers => {
             "X-Mailer" => "SPAM-THE-WORLD-BOT 1.23456789"
         }
@@ -94,8 +94,8 @@ DESCRIPTION
 
 USAGE EXAMPLES
         # Handle Email Failures
-    
-        my $msg = email {
+        
+    my $msg = email {
                 to      => '...',
                 subject => '...',
                 message => $msg,
@@ -103,12 +103,12 @@ USAGE EXAMPLES
                     '/path/to/file' => 'filename'
                 ]
             };
+            
+    die $msg unless $msg;
         
-        die $msg unless $msg;
-    
-        # Add More Email Headers
-    
-        email {
+    # Add More Email Headers
+        
+    email {
             to      => '...',
             subject => '...',
             message => $msg,
@@ -117,10 +117,10 @@ USAGE EXAMPLES
                 "X-Accept-Language" => 'en'
             }
         };
-    
-        # Send Text and HTML Email together
-    
-        email {
+        
+    # Send Text and HTML Email together
+        
+    email {
             to      => '...',
             subject => '...',
             type    => 'multi',
@@ -131,18 +131,18 @@ USAGE EXAMPLES
         };
 
         # Send mail via SMTP with SASL authentication
-    
-        {
+        
+    {
             ...,
             driver  => 'smtp',
             host    => 'smtp.website.com',
             user    => 'account@gmail.com',
             pass    => '****'
         }
-    
-        # Send mail to/from Google (gmail)
-    
-        {
+        
+    # Send mail to/from Google (gmail)
+        
+    {
             ...,
             ssl     => 1,
             driver  => 'smtp',
@@ -151,10 +151,10 @@ USAGE EXAMPLES
             user    => 'account@gmail.com',
             pass    => '****'
         }
-   
-        # Send mail to/from Google (gmail) using TLS
-    
-        {
+       
+    # Send mail to/from Google (gmail) using TLS
+        
+    {
             ...,
             tls     => 1,
             driver  => 'smtp',
@@ -163,17 +163,17 @@ USAGE EXAMPLES
             user    => 'account@gmail.com',
             pass    => '****'
         }
+            
+    # Debug email server communications, prints negotiation to console
         
-        # Debug email server communications, prints negotiation to console
-    
-        {
+    {
             ...,
             debug => 1
         }
+            
+    # Set headers to be issued with message
         
-        # Set headers to be issued with message
-    
-        {
+    {
             ...,
             from => '...',
             subject => '...',
@@ -182,10 +182,10 @@ USAGE EXAMPLES
                 'X-Accept-Language' => 'en'
             }
         }
-    
-        # Send email using sendmail, path is optional
-    
-        {
+        
+    # Send email using sendmail, path is optional
+        
+    {
             ...,
             driver  => 'sendmail',
             path    => '/usr/bin/sendmail',
