@@ -23,6 +23,6 @@ requires:
   Net::SSLeay: 0
 resources:
   bugtracker: https://github.com/alnewkirk/Emailesque/issues
-  homepage: https://github.com/alnewkirk/Emailesque
+  homepage: http://search.cpan.org/dist/Emailesque/
   repository: git://github.com/alnewkirk/Emailesque.git
-version: 1.200000
+version: 1.200001
