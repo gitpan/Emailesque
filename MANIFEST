@@ -1,9 +1,11 @@
+Changes
 LICENSE
 MANIFEST
 META.yml
 Makefile.PL
 README
-dist.ini
+README.mkdn
+cpanfile
 lib/Emailesque.pm
 t/01_load.t
 t/02_rundown.t
