@@ -25,4 +25,4 @@ resources:
   bugtracker: https://github.com/alnewkirk/Emailesque/issues
   homepage: http://search.cpan.org/dist/Emailesque/
   repository: git://github.com/alnewkirk/Emailesque.git
-version: 1.200001
+version: 1.200002
