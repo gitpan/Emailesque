@@ -14,8 +14,9 @@ meta-spec:
 name: Emailesque
 requires:
   Authen::SASL: 0
-  Email::AddressParser: 1
+  Email::AddressParser: 0
   Email::Stuffer: 0
+  File::Slurp: 0
   Hash::Merge: 0.12
   IO::Socket::SSL: 0
   Net::SMTP::SSL: 0
@@ -25,4 +26,4 @@ resources:
   bugtracker: https://github.com/alnewkirk/Emailesque/issues
   homepage: http://search.cpan.org/dist/Emailesque/
   repository: git://github.com/alnewkirk/Emailesque.git
-version: 1.200003
+version: 1.200004
