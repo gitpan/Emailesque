@@ -16,7 +16,7 @@ use Email::Sender::Transport::Sendmail;
 use Email::Sender::Transport::SMTP;
 use Email::Stuffer;
 
-our $VERSION = '1.200005'; # VERSION
+our $VERSION = '1.200006'; # VERSION
 
 
 sub new {
@@ -43,8 +43,10 @@ sub _prepare_send {
     my $stuff = Email::Stuffer->new;
     my $settings = $self->{settings};
 
+    $settings = {} unless 'HASH' eq ref $settings;
+    $options  = {} unless 'HASH' eq ref $options;
+
     $options = Hash::Merge->new( 'LEFT_PRECEDENT' )->merge($options, $settings);
-    # requested by igor.bujna@post.cz
 
     die "cannot send mail without a sender, recipient, subject and message"
         unless $options->{to} && $options->{from} &&
@@ -196,7 +198,7 @@ Emailesque - Lightweight To-The-Point Email
 
 =head1 VERSION
 
-version 1.200005
+version 1.200006
 
 =head1 SYNOPSIS
 
