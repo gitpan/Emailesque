@@ -16,7 +16,7 @@ use Email::Sender::Transport::Sendmail;
 use Email::Sender::Transport::SMTP;
 use Email::Stuffer;
 
-our $VERSION = '1.200007'; # VERSION
+our $VERSION = '1.200008'; # VERSION
 
 
 sub new {
@@ -80,7 +80,7 @@ sub _prepare_send {
 
     # process reply_to
     if ($options->{reply_to}) {
-        $stuff->header("Return-Path" => $options->{reply_to});
+        $stuff->header("Reply-to" => $options->{reply_to});
     }
 
     # process subject
@@ -203,7 +203,7 @@ Emailesque - Lightweight To-The-Point Email
 
 =head1 VERSION
 
-version 1.200007
+version 1.200008
 
 =head1 SYNOPSIS
 
